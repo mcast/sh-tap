@@ -3,7 +3,7 @@
 # Test framework, test thyself!
 
 main() {
-    echo "1..9"
+    echo "1..11"
 
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
@@ -86,6 +86,13 @@ not ok 3
 not ok 4 - bar
 1..4
 ' 'the TAPify filter'
+
+    # Comment indenter
+    printf 'whee\nwhoo\nwah\n' | t_comment_indent | \
+	t_stdin_is '# whee\n# whoo\n# wah\n' t_comment_indent
+
+    printf 'whee\nwhoo\nwah\n' | t_comment_indent '##  ' | \
+	t_stdin_is '##  whee\n##  whoo\n##  wah\n' 't_comment_indent(##  )'
 
     # Examples (XXX: copied)
     (echo foo; echo bar) | t_stdin_is "%s\n%s\n" "t_stdin_is printf" foo bar

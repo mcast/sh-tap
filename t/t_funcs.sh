@@ -91,3 +91,8 @@ t_stdin_is() {
 	    ) | awk -- '/^#/ { print }  !/^#/ { print "#   " $0 }'
     fi
 }
+
+t_comment_indent() {
+    indent_with=${1:-'# '}
+    awk -- "{ print \"$indent_with\" \$0 }"
+}
