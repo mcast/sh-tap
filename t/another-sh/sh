@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# Allow test scripts to execute under other shells than /bin/sh
+# assuming they use
+#
+#    #! /usr/bin/env sh
+
+if [ -z "$T_ANOTHER_SH" ]; then
+    echo "$0: Set T_ANOTHER_SH to choose another shell" >&2
+    exit 1
+fi
+
+exec $T_ANOTHER_SH "$@"
