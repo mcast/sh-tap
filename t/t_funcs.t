@@ -2,9 +2,7 @@
 
 # Test framework, test thyself!
 
-main() {
-    echo "1..15"
-
+tt_stdin() {
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
     ok1=$( echo -n "foo" | t_stdin_is "foo"; echo -n x )
@@ -57,8 +55,10 @@ x,'
     # nb. Wanted-side newline after moff is lost, replaced by one in
     # format.  This is not _required_ behaviour, but is documented and
     # will cause breakage if it were fixed to work more conveniently.
+}
 
 
+tt_okfail() {
     # Check per-test funcs
     (
 	t_ok
@@ -76,7 +76,10 @@ fin
 1..0
 not ok - fourth test with    longer name
 ' 't_ok, t_fail and plan primitives'
+}
 
+
+tt_tapify() {
     # Check TAPify_filter
     printf 'ok\nok - foo\nnot ok\n1..6\n# info\nnot ok - bar\nfin\n' | TAPify_filter | t_stdin_is 'ok 1
 ok 2 - foo
@@ -102,7 +105,10 @@ not ok 4 - bar
 
     (TAPified subtest_seterr; echo "# exit $?") | \
 	t_stdin_is 'ok 1 - first inner\n# nb. exitcode 67\n# exit 67\n' 'TAPified with "set -e"'
+}
 
+
+tt_helpers() {
     # Comment indenter
     printf 'whee\nwhoo\nwah\n' | t_comment_indent | \
 	t_stdin_is '# whee\n# whoo\n# wah\n' t_comment_indent
@@ -122,6 +128,8 @@ not ok 4 - bar
 }
 
 
+
+
 # Inner test runs as a function from main, to ensure that we can
 # handle "set -e" correctly
 subtest_seterr() {
@@ -136,6 +144,16 @@ subtest_the_error() {
     return 67
 }
 
+
+
+main() {
+    echo "1..15"
+
+    tt_stdin
+    tt_okfail
+    tt_tapify
+    tt_helpers
+}
 
 . "$(dirname $0)/t_funcs.sh"
 main | TAPify_filter
