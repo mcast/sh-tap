@@ -1,0 +1,58 @@
+#! /usr/bin/perl
+
+use strict;
+use warnings;
+
+=head1 NAME
+
+unhd - decoder for hd(1) output
+
+=head1 SYNOPSIS
+
+ t/unhd < /tmp/test-output-fragment
+
+=head1 DESCRIPTION
+
+Designed to accept a cut'n'paste of verbose test output from the
+C<t_stdin_is> helper in STDIN or from a file(s), and return the
+original data on STDOUT.
+
+=head1 CAVEATS
+
+It is quite specific to L<hd(1)> output.
+
+It doesn't deal with the repeated data marker.
+
+=cut
+
+
+sub main {
+
+  # slurp all the input, else we interleave collected output with pasted input
+  my @input = <>;
+
+  my $last_row;
+  while (defined($_ = shift @input)) {
+    # trim comment indent, perhaps more than once
+    s{^[# \t]+}{};
+
+    if (m{^\*$}) {
+      # Is a repeat row.  We need the next offset address too.
+      next unless defined $last_row;
+      die "$0: repeat rows are not implemented";
+    }
+
+    # ignore anything that has no offset address
+    next unless s{^([0-9a-f]{8})  }{};
+    my $addr = $1;
+
+    # ignore final data count; check format
+    next unless m{^((?:(?:[0-9a-f]{2} ){8} ){2})\|.{16}\|\s*$};
+    my $hex = $1;
+
+    $last_row = join '', map { chr(hex( $_ )) } split /\s+/, $hex;
+    print $last_row;
+  }
+}
+
+main();
