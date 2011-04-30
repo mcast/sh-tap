@@ -31,11 +31,12 @@
 #    not-expected-to-pass tests.
 #
 #
-# echo -n stuff | t_stdin_is "stuff" "name"
-# (echo stuff; echo nonsense) | t_stdin_is "stuff\nnonsense" "name" -e
+# echo stuff | t_stdin_is 'stuff'
+# echo -n stuff | t_stdin_is "%s" "name" "$stuffvar"
+# (echo foo; echo bar) | t_stdin_is "%s\n%s\n" "name" foo bar
 #
 #    Compare stdin with the wanted string, with optional name and
-#    optional replacement flags for the internal echo.
+#    optional replacement flags for the internal printf
 #
 #    Calls t_ok, or calls t_fail and formats up a comment explaining
 #    the problem.
@@ -48,7 +49,7 @@
 
 
 t_plan() {
-    echo "1..$1"
+    printf "1..%d\n" "$1"
 }
 t_ok() {
     descr=${1:+" - "}$1
@@ -71,11 +72,12 @@ TAPify() {
 }
 
 t_stdin_is() {
-    eflag=${3:--n}
-    want=$( echo $eflag "$1" | hd )
+    wantfmt="$1"
     descr="$2"
+    shift; [ -n "$descr" ] && shift
+    want=$( printf "$wantfmt" $@ | hd )
     got=$( hd )
-    if [ "$want" == "$got" ]; then
+    if [ "$want" = "$got" ]; then
 	t_ok "$descr"
     else
 	t_fail "$descr"

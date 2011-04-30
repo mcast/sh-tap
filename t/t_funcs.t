@@ -8,17 +8,15 @@ main() {
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
     ok1=$( echo -n "foo" | t_stdin_is "foo"; echo -n x )
-    ok2=$( echo -ne "biff\nboff" | t_stdin_is "biff\nboff" 'named test' -ne; echo -n x )
+    ok2=$( printf 'biff\nboff' | t_stdin_is 'biff\nboff' 'named test' -ne; echo -n x )
     ok3=$(
-        # beware literal \r
-	echo -e 'baff\rbam\\bop' | t_stdin_is "baffbam\bop
-"
+	printf 'baff\rbam\\bop\n' | t_stdin_is 'baff\015bam\134bop\12'
 	echo -n x )
     nok1=$( echo fibble | t_stdin_is wibble; echo -n x)
-    nok2=$( echo fibble | t_stdin_is wibble 2 ' '; echo -n x)
+    nok2=$( echo fibble | t_stdin_is 'wibble\n' 'nok2 test'; echo -n x)
 
     got=",$ok1,$ok2,$ok3,$nok1,$nok2,"
-    want=",ok
+    want=',ok
 x,ok - named test
 x,ok
 x,not ok
@@ -29,7 +27,7 @@ x,not ok
 # But got
 #   00000000  66 69 62 62 6c 65 0a                              |fibble.|
 #   00000007
-x,not ok - 2
+x,not ok - nok2 test
 # Wanted
 #   00000000  77 69 62 62 6c 65 0a                              |wibble.|
 #   00000007
@@ -37,8 +35,8 @@ x,not ok - 2
 # But got
 #   00000000  66 69 62 62 6c 65 0a                              |fibble.|
 #   00000007
-x,"
-    [ "$want" == "$got" ] || echo -n "not "
+x,'
+    [ "$want" = "$got" ] || echo -n "not "
     echo "ok - t_stdin_is check"
 
     if [ -n "$T_DEBUG" ]; then
@@ -61,7 +59,7 @@ not ok - fourth test with    longer name
 ' 't_ok, t_fail and plan primitives'
 
     # Check TAPify
-    echo -e 'ok\nok - foo\nnot ok\n1..6\n# info\nnot ok - bar\nfin' | TAPify | t_stdin_is 'ok 1
+    printf 'ok\nok - foo\nnot ok\n1..6\n# info\nnot ok - bar\nfin\n' | TAPify | t_stdin_is 'ok 1
 ok 2 - foo
 not ok 3
 1..6
@@ -72,5 +70,5 @@ not ok 4 - bar
 }
 
 
-source "$(dirname $0)/t_funcs.sh"
+. "$(dirname $0)/t_funcs.sh"
 main | TAPify
