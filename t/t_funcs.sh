@@ -36,11 +36,14 @@
 # (echo foo; echo bar) | t_stdin_is "%s\n%s\n" "name" foo bar
 #
 #    Compare stdin with the wanted string, with optional name and
-#    optional replacement flags for the internal printf
+#    optional replacement flags for the internal printf.
 #
 #    Calls t_ok, or calls t_fail and formats up a comment explaining
 #    the problem.
 #
+#    Trailing newlines beware!  $( foo ) chomps the last newline.  Use
+#    a guard character such as $(foo; echo -n x) if this is
+#    significant.
 #
 # main | TAPify
 #
@@ -75,7 +78,7 @@ t_stdin_is() {
     wantfmt="$1"
     descr="$2"
     shift; [ -n "$descr" ] && shift
-    want=$( printf "$wantfmt" $@ | hd )
+    want=$( printf "$wantfmt" "$@" | hd )
     got=$( hd )
     if [ "$want" = "$got" ]; then
 	t_ok "$descr"

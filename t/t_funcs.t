@@ -3,7 +3,7 @@
 # Test framework, test thyself!
 
 main() {
-    echo "1..7"
+    echo "1..9"
 
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
@@ -48,6 +48,16 @@ x,'
 	echo ">>|want|=|$want|<<"
 	echo ">>|got|=|$got|<<"
     fi >&2
+
+    printf 'miff\nmoff\nmaff\n' | \
+	t_stdin_is '%s%s\n' 't_stdin word breaking' "$( printf 'miff\nmoff\nm' )" 'aff'
+
+    printf 'miff\nmoff\nmaff\n' | \
+	t_stdin_is '%s\n%s\n' 't_stdin chompage' "$( printf 'miff\nmoff\n' )" 'maff'
+    # nb. Wanted-side newline after moff is lost, replaced by one in
+    # format.  This is not _required_ behaviour, but is documented and
+    # will cause breakage if it were fixed to work more conveniently.
+
 
     # Check per-test funcs
     (
