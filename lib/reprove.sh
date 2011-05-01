@@ -29,8 +29,8 @@ reprove() {
     # Avoid recursion loop & make some debug noise
     if [ -n "$T_ANOTHER_SH" ]; then
 	reprove_shelldebug
-#	echo "1..0 # skip Already under the influence of t/another-sh/sh"
-	echo "# Skip this file - already under the influence of t/another-sh/sh"
+#	echo "1..0 # skip Already under the influence of lib/another-sh/sh"
+	echo "# Skip this file - already under the influence of lib/another-sh/sh"
 	return 0
     fi
 
@@ -40,7 +40,7 @@ reprove() {
 
     # Setup
     export T_ANOTHER_SH=$with_sh
-    export PATH=$TDIR/another-sh:$PATH
+    export PATH=$SHTAP_HOME/lib/another-sh:$PATH
     reprove_shelldebug
 
     # Run some files.  One subtest out for each in the wrapped test,
