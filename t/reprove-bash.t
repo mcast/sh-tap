@@ -1,7 +1,7 @@
 #! /bin/sh
 
-TDIR="$(dirname $0)"
-. "$TDIR/t_funcs.sh"
-. "$TDIR/reprove.sh"
+main() {
+    reprove bash $TDIR/*.t
+}
 
-reprove bash $TDIR/*.t | TAPify_filter
+. "$(dirname $0)/do_shtap.sh"

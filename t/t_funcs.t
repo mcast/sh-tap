@@ -171,6 +171,4 @@ main() {
 }
 
 
-TDIR="$(dirname $0)"
-. "$TDIR/t_funcs.sh"
-main | TAPify_filter
+. "$(dirname $0)/do_shtap.sh"
