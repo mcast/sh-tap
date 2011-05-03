@@ -3,7 +3,7 @@
 # Test framework, test thyself!
 
 main() {
-    echo "1..3"
+    echo "1..7"
 
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
@@ -50,11 +50,20 @@ x,'
     fi >&2
 
     # Check per-test funcs
-    ( t_ok; t_ok "second"; t_fail; t_plan 7; t_noplan_fin; t_fail "fourth test with    longer name" ) | t_stdin_is 'ok
+    (
+	t_ok
+	t_ok "second"
+	t_fail
+	t_plan 7
+	t_noplan_fin
+	t_plan junk 2>/dev/null # supress warning
+	t_fail "fourth test with    longer name" ) | t_stdin_is \
+	    'ok
 ok - second
 not ok
 1..7
 fin
+1..0
 not ok - fourth test with    longer name
 ' 't_ok, t_fail and plan primitives'
 
@@ -67,6 +76,16 @@ not ok 3
 not ok 4 - bar
 1..4
 ' 'the TAPify filter'
+
+    # Examples (XXX: copied)
+    (echo foo; echo bar) | t_stdin_is "%s\n%s\n" "t_stdin_is printf" foo bar
+
+    # Broken under dash, wanted-printf broken
+    echo -n A | t_stdin_is '\x41' 'hexchar printf in dash # TODO'
+
+    # Weirdness remaining/suspected, needs better tests
+    printf 'nul\0byte' | t_stdin_is 'nul\0byte' 'nul ok'
+    printf 'back\10space' | t_stdin_is 'back\10space' 'backspace eating chars'
 }
 
 
