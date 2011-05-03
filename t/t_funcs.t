@@ -107,6 +107,20 @@ not ok 4 - bar
 	t_stdin_is 'ok 1 - first inner\n# nb. exitcode 67\n# exit 67\n' 'TAPified with "set -e"'
 }
 
+# Inner test runs as a function from main, to ensure that we can
+# handle "set -e" correctly
+subtest_seterr() {
+    set -e
+    t_ok "first inner"
+    subtest_the_error
+    t_fail "should have stopped before this"
+}
+# TESTME: all sh-tap functions need to work with+without "set -e"
+
+subtest_the_error() {
+    return 67
+}
+
 
 tt_helpers() {
     # Comment indenter
@@ -129,23 +143,6 @@ tt_helpers() {
 
 
 
-
-# Inner test runs as a function from main, to ensure that we can
-# handle "set -e" correctly
-subtest_seterr() {
-    set -e
-    t_ok "first inner"
-    subtest_the_error
-    t_fail "should have stopped before this"
-}
-# TESTME: all sh-tap functions need to work with+without "set -e"
-
-subtest_the_error() {
-    return 67
-}
-
-
-
 main() {
     echo "1..15"
 
@@ -155,5 +152,7 @@ main() {
     tt_helpers
 }
 
-. "$(dirname $0)/t_funcs.sh"
+
+TDIR="$(dirname $0)"
+. "$TDIR/t_funcs.sh"
 main | TAPify_filter
