@@ -19,10 +19,10 @@ tt_safeclean_tmpdir() {
 	fi
 
 	(export T_MOCK_MKTEMP_EXIT=1
-	    safeclean_tmpdir 2>&1
+	    safeclean_tmpdir__stdout 2>&1
 	    echo "exit $?") | \
 		t_stdin_is 'mktemp failed\nexit 5\n' 'safeclean_tmpdir: exitcode'
-	(safeclean_tmpdir 2>/dev/null; echo "exit $?") | \
+	(safeclean_tmpdir__stdout 2>/dev/null; echo "exit $?") | \
 	    t_stdin_is 'exit 4\n' 'safeclean_tmpdir: -d'
 
 	export T_MOCK_MKTEMP=/tmp/t_funcs.$$.kaploo
@@ -39,18 +39,18 @@ tt_safeclean_tmpdir() {
 	fi
 
 	mkdir "$T_MOCK_MKTEMP/not-empty"
-	(safeclean_tmpdir 2>/dev/null; echo "exit $?") | \
+	(safeclean_tmpdir__stdout 2>/dev/null; echo "exit $?") | \
 	    t_stdin_is 'exit 3\n' 'safeclean_tmpdir: not empty'
 	rmdir "$T_MOCK_MKTEMP/not-empty"
 
 	# chmods are private so a symlink attack cannot be used to
 	# publish user's files; but could still DoS something
 	chmod 0500 "$T_MOCK_MKTEMP"
-	(safeclean_tmpdir 2>/dev/null; echo "exit $?") | \
+	(safeclean_tmpdir__stdout 2>/dev/null; echo "exit $?") | \
 	    t_stdin_is 'exit 2\n' 'safeclean_tmpdir: filecount unreliable'
 	chmod 0700 "$T_MOCK_MKTEMP"
 
-	(safeclean_tmpdir 2>/dev/null; echo "  exit $?") | \
+	(safeclean_tmpdir__stdout 2>/dev/null; echo "  exit $?") | \
 	    t_stdin_is '%s  exit 0\n' \
 	    'safeclean_tmpdir: answer' "$T_MOCK_MKTEMP"
 
@@ -64,6 +64,13 @@ tt_safeclean_tmpdir() {
     else
 	t_ok 'mockery containment'
     fi
+}
+
+# safeclean_tmpdir sets a variable, but is quiet.
+# Printing the directory is more convenient for us.
+safeclean_tmpdir__stdout() {
+    safeclean_tmpdir
+    printf '%s' "$safeclean_dir"
 }
 
 

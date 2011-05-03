@@ -20,8 +20,15 @@
 # Sadly we must talk to the cheeky monkeys inbetween.  Thus we risk
 # littering files and/or blowing away the wrong directory.
 safeclean_tmpdir() {
-    tmpdir_template="$( basename "$0" | tr -d '\012' | tr -c '_a-zA-Z0-9,.-' _ )"
-    new_tmpdir="$( mktemp -d --tmpdir "t__$tmpdir_template.XXXXXX" )"
+    local tmpdir_template="$( basename "$0" | tr -d '\012' | tr -c '_a-zA-Z0-9,.-' _ )"
+
+    local new_tmpdir="$( mktemp -d --tmpdir "t__$tmpdir_template.XXXXXX" 2>/dev/null || \
+                         mktemp -d -t       "t__$tmpdir_template.XXXXXX"                )"
+    # mktemp -t is deprecated in GNU coreutils 7.4
+    #
+    # mktemp --tmpdir does not exist in the OpenBSD-derived v1.5 in
+    # Lenny (coreutils 6.10 does not include mktemp)
+
     if [ "$?" != '0' ]; then
 	echo 'mktemp failed' >&2
 	return 5
@@ -42,7 +49,8 @@ safeclean_tmpdir() {
 	else
 	    trap 'rm -rf "$new_tmpdir"' EXIT
 	fi
-	printf '%s' "$new_tmpdir"
+	# Set our output variable
+	safeclean_dir="$new_tmpdir"
     fi
 }
 
