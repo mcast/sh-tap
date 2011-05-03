@@ -3,7 +3,7 @@
 # Test framework, test thyself!
 
 main() {
-    echo "1..14"
+    echo "1..15"
 
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
@@ -100,6 +100,9 @@ not ok 4 - bar
     (TAPified sh -c 'printf "ok\n"; echo Something broke >&2; exit 17'; echo "# exit $?") 2>/dev/null | \
 	t_stdin_is 'ok 1\nBail out! # exit code was 17\n# exit 17\n' 'TAPified failing'
 
+    (TAPified subtest_seterr; echo "# exit $?") | \
+	t_stdin_is 'ok 1 - first inner\nBail out! # exit code was 67\n# exit 67\n' 'TAPified with "set -e"'
+
     # Comment indenter
     printf 'whee\nwhoo\nwah\n' | t_comment_indent | \
 	t_stdin_is '# whee\n# whoo\n# wah\n' t_comment_indent
@@ -116,6 +119,21 @@ not ok 4 - bar
     # Weirdness remaining/suspected, needs better tests
     printf 'nul\0byte' | t_stdin_is 'nul\0byte' 'nul ok'
     printf 'back\10space' | t_stdin_is 'back\10space' 'backspace eating chars'
+}
+
+
+# Inner test runs as a function from main, to ensure that we can
+# handle "set -e" correctly
+subtest_seterr() {
+    set -e
+    t_ok "first inner"
+    subtest_the_error
+    t_fail "should have stopped before this"
+}
+# TESTME: all sh-tap functions need to work with+without "set -e"
+
+subtest_the_error() {
+    return 67
 }
 
 

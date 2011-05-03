@@ -88,7 +88,11 @@ TAPify_filter() {
 TAPified() {
     prog=$1
     shift
-    ( $prog "$@" || printf 'Bail out! # exit code was %s' $? ) | TAPify_filter
+    ( ($prog "$@")
+	progret=$?
+	if [ "$progret" != 0 ]; then
+	    printf 'Bail out! # exit code was %s' $progret
+	fi ) | TAPify_filter
 }
 
 t_stdin_is() {
