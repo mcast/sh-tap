@@ -49,3 +49,6 @@ It works well enough.  Selftests pass.  Stop messing about with it!
 However, some (names of) functions might have to change.  There are
 neater solutions to common idioms, so refactoring or deprecation are
 likely.
+
+* Bugs
+minor mkdir->chmod race in t/safeclean_tmpdir.t

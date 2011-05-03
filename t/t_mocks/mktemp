@@ -1,0 +1,17 @@
+#! /bin/sh
+
+# A broken or unintended mock mktemp is as dangerous as a broken
+# safeclean!  Be careful...
+
+if [ -n "$T_MOCK_MKTEMP" ]; then
+
+    echo "$T_MOCK_MKTEMP"
+    exit ${T_MOCK_MKTEMP_EXIT:-0}
+
+else
+
+    echo '/tmp/mock/mktemp/unexpected'
+    echo "$0: was I unexpected?" >&2
+    exit 1
+
+fi
