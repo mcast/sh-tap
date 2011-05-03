@@ -43,11 +43,20 @@ reprove() {
     export PATH=$TDIR/another-sh:$PATH
     reprove_shelldebug
 
-    # Run some files
+    # Run some files.  One subtest out for each in the wrapped test,
+    # plus another to check the wrapped test does not whinge
     for tprog in $run_progs; do
 	printf '#\n#\n'
 	t_ok "==== Starting $tprog under $with_sh ===="
-	sh $tprog | deTAPify
+
+#	sh $tprog | deTAPify
+	{
+	    {
+		# 10>&2 sends stdout to stderr??
+		sh $tprog 3>&2 4>&2 5>&2 6>&2 7>&2 8>&2 9>&2 | deTAPify_filter >&3
+	    } 2>&1 | t_stdin_is '' "^^^^ quiet on stderr and fd 3-9: $tprog under $with_sh"
+	} 3>&1
+	# TESTME: risk of interleaved output?  it seems to work...
     done
 
     t_noplan_fin
