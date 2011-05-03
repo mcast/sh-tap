@@ -38,6 +38,15 @@
 #    not-expected-to-pass tests.
 #
 #
+# t_skip $n
+#
+#    Fail/skip that many tests.
+#
+#    This allows some subtests to be in a conditional code path
+#    without disrupting an up-front testing plan (t_plan).  It is of
+#    little value under a post-hoc plan (t_noplan_fin).
+#
+#
 # echo stuff | t_stdin_is 'stuff'
 # echo -n stuff | t_stdin_is "%s" "name" "$stuffvar"
 # (echo foo; echo bar) | t_stdin_is "%s\n%s\n" "name" foo bar
@@ -78,6 +87,13 @@ t_fail() {
     descr=${1:+" - "}$1
     echo "not ok$descr"
 }
+t_skip() {
+    n=$1
+    for i in $( seq $n ); do
+	echo "not ok # skip"
+    done
+}
+
 t_noplan_fin() {
     echo "fin"
 }

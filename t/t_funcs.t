@@ -64,6 +64,7 @@ tt_okfail() {
 	t_ok
 	t_ok "second"
 	t_fail
+	t_skip 3
 	t_plan 7
 	t_noplan_fin
 	t_plan junk 2>/dev/null # supress warning
@@ -71,6 +72,9 @@ tt_okfail() {
 	    'ok
 ok - second
 not ok
+not ok # skip
+not ok # skip
+not ok # skip
 1..7
 fin
 1..0
