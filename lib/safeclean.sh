@@ -47,7 +47,9 @@ safeclean_tmpdir() {
 	if [ -n "$T_DEBUG" ]; then
 	    echo "Leaving $new_tmpdir/ behind because T_DEBUG is set" >&2
 	else
-	    trap 'rm -rf "$new_tmpdir"' EXIT
+	    trap 'echo rm -rvf "$new_tmpdir" >&2' EXIT
+# XXX: this trap is global; should we ensure it is blank before messing?
+# also our variable is gone by the time it runs; we must store a list of tmpdirs made
 	fi
 	# Set our output variable
 	safeclean_dir="$new_tmpdir"

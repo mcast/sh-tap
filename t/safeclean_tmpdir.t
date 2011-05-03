@@ -64,6 +64,14 @@ tt_safeclean_tmpdir() {
     else
 	t_ok 'mockery containment'
     fi
+
+    # Now do it for real & check clean up
+    printf %s "$safeclean_dir" | t_stdin_is '' 'pre-mktemp'
+    {
+	made_dir=$( safeclean__for_real )
+    } 4>&1
+    printf '# made_dir=%s (after subshell)\n' "$made_dir"
+    [ -n "$made_dir" ] && [ ! -d "$made_dir" ]; t_prev_okfail 'mktemp cleaned'
 }
 
 # safeclean_tmpdir sets a variable, but is quiet.
@@ -73,11 +81,23 @@ safeclean_tmpdir__stdout() {
     printf '%s' "$safeclean_dir"
 }
 
+safeclean__for_real() { # stdout = test results, fd3 = made directory
+    {
+	safeclean_tmpdir; t_prev_okfail 'real mktemp'
+	[ -n "$safeclean_dir" ] && [ -d "$safeclean_dir" ] && \
+	    [ -w "$safeclean_dir" ]; t_prev_okfail 'mktemp writable dir'
+	cp /bin/sh "$safeclean_dir" && [ -f "$safeclean_dir/sh" ] && \
+	    [ -x "$safeclean_dir/sh" ]; t_prev_okfail 'cp sh tmpdir'
+	printf '# safeclean_dir=%s\n' "$safeclean_dir"
+    } >&4 # test output
+    printf %s "$safeclean_dir"
+}
+
 
 main() {
-    t_plan 9
+    t_plan 14
 
-    tt_safeclean_tmpdir # 9
+    tt_safeclean_tmpdir # 9+5
 }
 
 
