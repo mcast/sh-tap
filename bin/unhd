@@ -19,9 +19,11 @@ original data on STDOUT.
 
 =head1 CAVEATS
 
-It is quite specific to L<hd(1)> output.
+It is quite specific to L<hd(1)> output, when called with no extra
+flags.  It works with the Debian package bsdmainutils 6.1.10 and
+8.0.1ubuntu1 .
 
-It doesn't deal with the repeated data marker.
+It chokes on with the repeated data marker.
 
 =cut
 
@@ -39,7 +41,7 @@ sub main {
     if (m{^\*$}) {
       # Is a repeat row.  We need the next offset address too.
       next unless defined $last_row;
-      die "$0: repeat rows are not implemented";
+      die "$0: repeat rows are not implemented\n";
     }
 
     # ignore anything that has no offset address
@@ -47,7 +49,7 @@ sub main {
     my $addr = $1;
 
     # ignore final data count; check format
-    next unless m{^((?:(?:[0-9a-f]{2} ){8} ){2})\|.{16}\|\s*$};
+    next unless m{^((?:(?:[0-9a-f]{2} |   ){8} ){2})\|.{1,16}\|\s*$};
     my $hex = $1;
 
     $last_row = join '', map { chr(hex( $_ )) } split /\s+/, $hex;
