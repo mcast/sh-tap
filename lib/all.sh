@@ -11,3 +11,4 @@ fi
 # Load all sh-tap functions
 . "$SHTAP_HOME/lib/t_funcs.sh"
 . "$SHTAP_HOME/lib/reprove.sh"
+. "$SHTAP_HOME/lib/rand.sh"
