@@ -12,3 +12,4 @@ fi
 . "$SHTAP_HOME/lib/t_funcs.sh"
 . "$SHTAP_HOME/lib/reprove.sh"
 . "$SHTAP_HOME/lib/rand.sh"
+. "$SHTAP_HOME/lib/ulimits.sh"

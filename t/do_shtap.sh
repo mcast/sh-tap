@@ -29,5 +29,23 @@ SHTAP_HOME="$TDIR/.."
 # Load functions
 . "$SHTAP_HOME/lib/all.sh"
 
+
+# Setting ulimit is a good idea, especially on tests.  If they nibble,
+# increase them.  When they bite, it was probably for the best!
+#
+# The limits are likely to hit subprocesses, rather than this shell
+# running the tests.  This manifests as incomplete output and non-zero
+# exit codes.
+#
+# We accept limits from the environment, or take these defaults.
+# To not call ulimit, leave any of them unset.
+: ${t_maxmem:=40960} # KiB
+: ${t_maxprocs:=250}
+: ${t_maxcpu:=15} # seconds (per process)
+: ${t_maxfds:=32}
+: ${t_maxfilesz:=10240} # KiB (hopefully, despite shells' efforts)
+
+t_set_ulimits
+
 # Assume main was defined already, and run it as the test.
 TAPified main
