@@ -87,10 +87,10 @@ not ok 4 - bar
 1..4
 ' 'TAPify_filter does numbers and plan'
 
-    printf 'ok\nBail out! # exit code was 23\nBail out! # exit code was 21\nok\nfin\n' | \
+    printf 'ok\nexitcode 23\nexitcode 21\nok\nfin\n' | \
 	(TAPify_filter; echo "## filter exit $?") | \
 	t_stdin_is \
-	'ok 1\nBail out! # exit code was 23\nBail out! # exit code was 21\nok 2\n1..2\n## filter exit 21\n' \
+	'ok 1\n# nb. exitcode 23\n# nb. exitcode 21\nok 2\n1..2\n## filter exit 21\n' \
 	'TAPify_filter uses final exitcode'
 
     # Check TAPified wrapper
@@ -98,10 +98,10 @@ not ok 4 - bar
 	t_stdin_is 'ok 1\nok 2\n1..2\n# exit 0\n' 'TAPified OK'
 
     (TAPified sh -c 'printf "ok\n"; echo Something broke >&2; exit 17'; echo "# exit $?") 2>/dev/null | \
-	t_stdin_is 'ok 1\nBail out! # exit code was 17\n# exit 17\n' 'TAPified failing'
+	t_stdin_is 'ok 1\n# nb. exitcode 17\n# exit 17\n' 'TAPified failing'
 
     (TAPified subtest_seterr; echo "# exit $?") | \
-	t_stdin_is 'ok 1 - first inner\nBail out! # exit code was 67\n# exit 67\n' 'TAPified with "set -e"'
+	t_stdin_is 'ok 1 - first inner\n# nb. exitcode 67\n# exit 67\n' 'TAPified with "set -e"'
 
     # Comment indenter
     printf 'whee\nwhoo\nwah\n' | t_comment_indent | \

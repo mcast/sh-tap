@@ -79,7 +79,7 @@ TAPify_filter() {
     awk -- '
  /^(not )?ok/ { n++; sub(/ok/,"ok " n) }
  /^fin$/ { $0 = "1.." n }
- /^Bail out! # exit code was ([0-9]+)/ { will_exit=substr($0, 26)+0 }
+ /^exitcode [0-9]+$/ { will_exit=substr($0, 9)+0; $0 = "# nb. " $0 }
  { print }
  END { exit will_exit }
 '
@@ -91,7 +91,7 @@ TAPified() {
     ( ($prog "$@")
 	progret=$?
 	if [ "$progret" != 0 ]; then
-	    printf 'Bail out! # exit code was %s' $progret
+	    printf 'exitcode %s' $progret
 	fi ) | TAPify_filter
 }
 
