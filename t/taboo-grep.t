@@ -10,6 +10,7 @@ tt_taboo_grep() { # XXX: fix calling convention, extract+test this for general u
     } 3>&1
 }
 # TESTME: grep args lost (making false pass) under dash
+# TESTME: check for functions in lib/ which !~ /^t_/ ...  ^\s*(?!t_)[a-z0-9_]+\s*\(\)  ... messy without a grep pipeline
 
 main() {
     t_plan 3

@@ -2,6 +2,7 @@
 
 # Test framework, test thyself!
 
+# XXX: many t_funcs should return a status
 tt_stdin() {
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.

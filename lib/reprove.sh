@@ -45,6 +45,8 @@ reprove() {
 
     # Run some files.  One subtest out for each in the wrapped test,
     # plus another to check the wrapped test does not whinge
+    #    TESTME: and another for the subject-test exitcode
+    #    XXX: redirections 3-10 could break some code?  and they're messy
     for tprog in $run_progs; do
 	printf '#\n#\n'
 	t_ok "==== Starting $tprog under $with_sh ===="

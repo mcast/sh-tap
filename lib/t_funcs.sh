@@ -134,6 +134,8 @@ TAPified() {
 	fi ) | TAPify_filter
 }
 
+# XXX: re-cast as piping to t_fds_same (or whatever) with some fd number, defaulting to 8.  Then we can easily t_stdin_sameas_file for golden input.
+# (...assuming (hd <&$fdnum) works)
 t_stdin_is() {
     wantfmt="$1"
     descr="$2"
