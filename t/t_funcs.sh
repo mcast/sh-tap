@@ -17,6 +17,13 @@
 #    prove(1) insists we have exactly one plan.
 #
 #
+# t_bailout "message"
+#
+#    Send the "abort all remaining tests" string 'Bail out!', with
+#    optional explanatory message.  Does not call exit, you should
+#    probably do this immediately afterwards.
+#
+#
 # t_ok "name"
 # t_fail "name"
 #
@@ -73,6 +80,9 @@ t_fail() {
 }
 t_noplan_fin() {
     echo "fin"
+}
+t_bailout() {
+    printf 'Bail out!%s\n' ${1:+" # $1"}
 }
 
 TAPify_filter() {
