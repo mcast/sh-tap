@@ -1,8 +1,8 @@
 # -*- shell -*-
 
 
-# Strip off test numbering so we can take another pass through TAPify
-deTAPify() {
+# Strip off test numbering so we can take another pass through TAPify_filter
+deTAPify_filter() {
     perl -ne '
  if (/^1\.\.0\s/)	{ print "ok # skip entire file: $_" }
  elsif (/^1\.\.\d/)	{ print "# old plan: $_" }
@@ -49,7 +49,7 @@ reprove() {
 	printf '#\n#\n'
 	t_ok "==== Starting $tprog under $with_sh ===="
 
-#	sh $tprog | deTAPify
+#	sh $tprog | deTAPify_filter
 	{
 	    {
 		# 10>&2 sends stdout to stderr??

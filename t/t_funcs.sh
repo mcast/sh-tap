@@ -24,8 +24,8 @@
 #
 #    These may run in subshells, so cannot influence state of the
 #    parent process.  For this reason they do no output the test
-#    number and so must be used with TAPify before prove(1) will
-#    accept them.
+#    number and so must be used with TAPify_filter before prove(1)
+#    will accept them.
 #
 #    Suffix the name with " # skip" or " # todo" to mark skipped or
 #    not-expected-to-pass tests.
@@ -45,9 +45,18 @@
 #    a guard character such as $(foo; echo -n x) if this is
 #    significant.
 #
-# main | TAPify
 #
-#    Assuming shellfunction main() contains all your tests
+# main | TAPify_filter
+#
+#    Assuming shellfunction main() contains all your tests - append
+#    test numbers and translate t_noplan_fin output into a post-hoc
+#    test plan.  Does not maintain the exit code!
+#
+#
+# TAPified main 'args'...
+#
+#    Run main with a TAPify_filter (as above), passing any arguments
+#    and return with the exit code from main.
 
 
 
@@ -66,12 +75,20 @@ t_noplan_fin() {
     echo "fin"
 }
 
-TAPify() {
+TAPify_filter() {
     awk -- '
  /^(not )?ok/ { n++; sub(/ok/,"ok " n) }
  /^fin$/ { $0 = "1.." n }
+ /^Bail out! # exit code was ([0-9]+)/ { will_exit=substr($0, 26)+0 }
  { print }
+ END { exit will_exit }
 '
+}
+
+TAPified() {
+    prog=$1
+    shift
+    ( $prog "$@" || printf 'Bail out! # exit code was %s' $? ) | TAPify_filter
 }
 
 t_stdin_is() {

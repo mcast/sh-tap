@@ -3,7 +3,7 @@
 # Test framework, test thyself!
 
 main() {
-    echo "1..11"
+    echo "1..14"
 
     # Check that t_stdin_is behaves: several sub-tests rolled into one
     # externally visible comparison.
@@ -77,15 +77,28 @@ fin
 not ok - fourth test with    longer name
 ' 't_ok, t_fail and plan primitives'
 
-    # Check TAPify
-    printf 'ok\nok - foo\nnot ok\n1..6\n# info\nnot ok - bar\nfin\n' | TAPify | t_stdin_is 'ok 1
+    # Check TAPify_filter
+    printf 'ok\nok - foo\nnot ok\n1..6\n# info\nnot ok - bar\nfin\n' | TAPify_filter | t_stdin_is 'ok 1
 ok 2 - foo
 not ok 3
 1..6
 # info
 not ok 4 - bar
 1..4
-' 'the TAPify filter'
+' 'TAPify_filter does numbers and plan'
+
+    printf 'ok\nBail out! # exit code was 23\nBail out! # exit code was 21\nok\nfin\n' | \
+	(TAPify_filter; echo "## filter exit $?") | \
+	t_stdin_is \
+	'ok 1\nBail out! # exit code was 23\nBail out! # exit code was 21\nok 2\n1..2\n## filter exit 21\n' \
+	'TAPify_filter uses final exitcode'
+
+    # Check TAPified wrapper
+    (TAPified printf 'ok\nok\nfin\n'; echo "# exit $?") | \
+	t_stdin_is 'ok 1\nok 2\n1..2\n# exit 0\n' 'TAPified OK'
+
+    (TAPified sh -c 'printf "ok\n"; echo Something broke >&2; exit 17'; echo "# exit $?") 2>/dev/null | \
+	t_stdin_is 'ok 1\nBail out! # exit code was 17\n# exit 17\n' 'TAPified failing'
 
     # Comment indenter
     printf 'whee\nwhoo\nwah\n' | t_comment_indent | \
@@ -107,4 +120,4 @@ not ok 4 - bar
 
 
 . "$(dirname $0)/t_funcs.sh"
-main | TAPify
+main | TAPify_filter
