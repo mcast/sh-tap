@@ -80,6 +80,11 @@ fin
 1..0
 not ok - fourth test with    longer name
 ' 't_ok, t_fail and plan primitives'
+
+    (
+	[ 1 = 2 ]; t_prev_okfail '1=2'
+	[ 2 = 2 ]; t_prev_okfail '2=2' ) | t_stdin_is \
+	    'not ok - 1=2\nok - 2=2\n' 't_prev_okfail'
 }
 
 
@@ -157,10 +162,10 @@ tt_helpers() {
 
 
 main() {
-    echo "1..18"
+    echo "1..19"
 
     tt_stdin # 3
-    tt_okfail # 1
+    tt_okfail # 2
     tt_tapify # 7
     tt_helpers # 7
 }

@@ -38,6 +38,13 @@
 #    not-expected-to-pass tests.
 #
 #
+# do_something; t_prev_okfail "name"
+#
+#    Pass or fail one test, with optional name, according to the
+#    return code of the previous operation.  (Hence the conditional is
+#    pushed into the test framework.)
+#
+#
 # t_skip $n
 #
 #    Fail/skip that many tests.
@@ -87,6 +94,12 @@ t_fail() {
     descr=${1:+" - "}$1
     echo "not ok$descr"
 }
+t_prev_okfail() {
+    [ $? -eq 0 ] || printf 'not '
+    descr="${1:+" - "}$1"
+    echo "ok$descr"
+}
+
 t_skip() {
     n=$1
     for i in $( seq $n ); do
