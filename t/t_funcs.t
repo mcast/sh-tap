@@ -103,8 +103,10 @@ not ok 4 - bar
     (TAPified sh -c 'printf "ok\n"; echo Something broke >&2; exit 17'; echo "# exit $?") 2>/dev/null | \
 	t_stdin_is 'ok 1\n# nb. exitcode 17\n# exit 17\n' 'TAPified failing'
 
+    subtest_the_error; [ $? = 1 ]; t_prev_okfail 'subtest_the_error'
+    (subtest_seterr) > /dev/null; [ $? = 1 ]; t_prev_okfail 'subtest_seterr'
     (TAPified subtest_seterr; echo "# exit $?") | \
-	t_stdin_is 'ok 1 - first inner\n# nb. exitcode 67\n# exit 67\n' 'TAPified with "set -e"'
+	t_stdin_is 'ok 1 - first inner\n# nb. exitcode 1\n# exit 1\n' 'TAPified with "set -e"'
 }
 
 # Inner test runs as a function from main, to ensure that we can
@@ -118,7 +120,10 @@ subtest_seterr() {
 # TESTME: all sh-tap functions need to work with+without "set -e"
 
 subtest_the_error() {
-    return 67
+    return 1
+    # We use 1 for portability: under dash, termination with "set -e"
+    # passes on (this) terminating returncode, but bash returns 1 (or
+    # possibly whatever the ERR trap gives?)
 }
 
 
@@ -144,7 +149,7 @@ tt_helpers() {
 
 
 main() {
-    echo "1..15"
+    echo "1..17"
 
     tt_stdin
     tt_okfail
