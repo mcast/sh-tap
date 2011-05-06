@@ -54,6 +54,10 @@ main() {
     tt_binary_clean 161 '  #  '
     tt_binary_clean 159 '  #  '
 
+    # Enough data to cover all digraphs ~10 times each.
+    # <4 sec on this old netbook (three times for t/*.t)
+    tt_binary_clean $(( 256 * 256 * 5 )) '#'
+
     tt_repeatrow
 
     # Without the "tail -n+5", we concatenate

@@ -55,6 +55,17 @@ x,'
     # nb. Wanted-side newline after moff is lost, replaced by one in
     # format.  This is not _required_ behaviour, but is documented and
     # will cause breakage if it were fixed to work more conveniently.
+
+    # Check that escape codes stay safe in hd output.  Force a failure
+    # in DUT and diff the output to some text I cooked up manually.
+    {
+	printf 'GOT>\\a\\b\\f\\n\\r<GOT' | \
+	    t_stdin_is 'WNT>\\a\\b\\f\\n\\r<WNT' DUT | {
+	    diff -u $TDIR/t_funcs.binsafe.txt -
+	    t_prev_okfail 't_stdin_is safe for binary' >&3
+	    # indent just the diff output
+	} | t_comment_indent '#\t'
+    } 3>&1
 }
 
 
@@ -162,9 +173,9 @@ tt_helpers() {
 
 
 main() {
-    echo "1..19"
+    echo "1..20"
 
-    tt_stdin # 3
+    tt_stdin # 4
     tt_okfail # 2
     tt_tapify # 7
     tt_helpers # 7

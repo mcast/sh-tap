@@ -145,9 +145,10 @@ t_stdin_is() {
     else
 	t_fail "$descr"
 	(
-	    echo "# Wanted"; echo "$want"
+	    printf '# Wanted\n%s\n' "$want"
+	    # XXX: print (nil)s when empty
 	    echo "#"
-	    echo "# But got"; echo "$got"
+	    printf '# But got\n%s\n' "$got"
 	    ) | awk -- '/^#/ { print }  !/^#/ { print "#   " $0 }'
     fi
 }
