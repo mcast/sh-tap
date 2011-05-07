@@ -17,6 +17,9 @@ main() {
     # sh-tap promises it will not assume that $TDIR is defined
     tt_taboo_grep -r   '$TDIR'    $SHTAP_HOME/lib
 
+    # we should be using TAPified, not TAPify_filter
+    tt_taboo_grep -r   '[m]ain.*TAPify' $TDIR
+
     TODO=1
     tt_taboo_grep -rni '[T]ESTME' $SHTAP_HOME/lib $TDIR
     tt_taboo_grep -ri '[X]XX'     $SHTAP_HOME/lib $TDIR
