@@ -1,8 +1,8 @@
 #! /bin/sh
 
 tt_taboo_grep() { # XXX: fix calling convention, extract+test this for general use
-    local grep_for=$*
-    local t_todo=${TODO:+" # TODO"}
+    local grep_for="$*"
+    local t_todo="${TODO:+" # TODO"}"
 
     # XXX: push $TODO check into t_ok and friends, and acks to "shell-functions"
     {
