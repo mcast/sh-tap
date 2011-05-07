@@ -28,6 +28,7 @@ the test script.
 sh-tap does not ensure the test script's exitcode is set to match the
 overall pass/fail state.  That saves keeping some state.
 
+* History
 ** Inception
 It started life as "I'll just write some tests for this (shell script)
 app.  I guess I will need 'ok' and 'fail'".  It then ballooned into a
@@ -41,3 +42,10 @@ but decided, after skim-reading it, that I liked mine better.  NIH.
 
 After that, the early commit history was already a mess so it got
 rebased until "history" is not the right word for it.
+
+** v0.10
+It works well enough.  Selftests pass.  Stop messing about with it!
+
+However, some (names of) functions might have to change.  There are
+neater solutions to common idioms, so refactoring or deprecation are
+likely.
