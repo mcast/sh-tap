@@ -22,7 +22,7 @@ main() {
 
     # Plan size will need updating with each file in the package.
     # Annoying but safe?
-    t_plan 14
+    t_plan $( cat $TDIR/sh_file_count.txt )
 
     for file in $( list_sh_files ); do
 	tt_checkbashisms "$file"

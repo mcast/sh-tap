@@ -19,4 +19,5 @@ README.txt
 bin/unhd
 t/checkbashisms_filter.pl
 t/non_sh_filter.pl
+t/sh_file_count.txt
 t/t_funcs.binsafe.txt
