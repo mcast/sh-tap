@@ -10,7 +10,10 @@ rand_seed() {
     if [ -n "$T_RSEED" ]; then
 	echo $T_RSEED
     else
-	perl -we 'use 5.004; printf("%u\n", rand(2**32-1))'
+	perl -we 'use 5.004; printf("%u\n", rand(2**32-1))' || {
+	    echo "$0: $SHTAP_HOME/lib/rand.sh: failed to make rand_seed" >&2
+	    exit 1
+	}
     fi
 }
 

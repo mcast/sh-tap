@@ -6,7 +6,7 @@ tt_seedable() {
 	T_RSEED=
 	[ "$( rand_seed )" != "$( rand_seed )" ]; t_prev_okfail 'rand_seed is unpredictable'
 	# if you see this subtest fail twice in a row, please buy us both
-	# lottery tickets immediately
+	# lottery tickets immediately (or check your Perl install)
     )
 
     T_RSEED=123456789 rand_seed | t_stdin_is '123456789\n' 'rand_seed is fixable'
@@ -14,6 +14,7 @@ tt_seedable() {
     (
 	t_rand_seed_v
 	num=$T_RSEED
+	[ -n "$num" ]; t_prev_okfail "seed is not empty"
 	[ "$( rand_seed )" = "$( rand_seed )" ]; t_prev_okfail "t_rand_seed_v ($T_RSEED)"
 	t_rand_seed_v
 	[ "$( rand_seed )" = "$num" ]; t_prev_okfail 't_rand_seed_v is idempotent'
@@ -56,9 +57,9 @@ tt_rand_stream_content() {
 }
 
 main() {
-    t_plan 15
+    t_plan 16
     tt_diagnostic # 5
-    tt_seedable   # 8
+    tt_seedable   # 9
     tt_rand_stream_content # 2
 }
 
