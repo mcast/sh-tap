@@ -35,7 +35,7 @@ tt_repeatrow() {
 	( # feed it some 4-byte repeating data
 	unhd 2>&1 >/dev/null; echo "exit $?" ) | \
 	    t_stdin_is '%s\nexit 255\n' 'repeat rows are broken, but not silently' \
-	    't/../bin/unhd: repeat rows are not implemented'
+	    't/../share/../bin/unhd: repeat rows are not implemented'
 }
 
 main() {
