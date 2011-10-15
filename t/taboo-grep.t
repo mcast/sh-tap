@@ -24,6 +24,7 @@ main() {
     # Pragma requires Perl 5.6-ish, we probably can manage without
     tt_taboo_grep -r   '[u]se.warnings' $SHTAP_HOME $SHTAP_HOME/../bin $TDIR
     # XXX: Passing ' ' in the pattern is tricky - another black mark against this parameter scheme
+    # XXX: tests apply to source, not installed copy
 
     TODO=1
     tt_taboo_grep -rni '[T]ESTME' $SHTAP_HOME $TDIR

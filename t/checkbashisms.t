@@ -10,6 +10,7 @@ tt_checkbashisms() {
 }
 
 list_sh_files() {
+    # XXX: run on the project, not an installed copy!
     (cd "$SHTAP_HOME/.."; find . -type f) | $TDIR/non_sh_filter.pl
 }
 

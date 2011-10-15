@@ -41,6 +41,7 @@ tt_repeatrow() {
 main() {
     t_plan 8
     PATH="$SHTAP_HOME/../bin:$PATH"
+    # XXX: need unhd; would be installed in some cases?  Or should be elsewhere?
 
     echo -n A | t_stdin_is moo DUT0 | tail -n+5 | \
 	t_stdin_is '%s\n' "check device-under-test ignores 'wanted'" \
