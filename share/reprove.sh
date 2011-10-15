@@ -29,8 +29,8 @@ reprove() {
     # Avoid recursion loop & make some debug noise
     if [ -n "$T_ANOTHER_SH" ]; then
 	reprove_shelldebug
-#	echo "1..0 # skip Already under the influence of lib/another-sh/sh"
-	echo "# Skip this file - already under the influence of lib/another-sh/sh"
+#	echo "1..0 # skip Already under the influence of another-sh/sh"
+	echo "# Skip this file - already under the influence of another-sh/sh"
 	return 0
     fi
 
