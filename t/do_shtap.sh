@@ -16,7 +16,7 @@ TDIR="$(dirname $0)"
 
 # sh-tap must know its location.
 #
-SHTAP_HOME="$TDIR/.."
+SHTAP_HOME="$TDIR/../share"
 # Easy for us.  Other project must find their own way.  Possible
 # mechanisms include,
 #
@@ -27,7 +27,7 @@ SHTAP_HOME="$TDIR/.."
 
 
 # Load functions
-. "$SHTAP_HOME/lib/all.sh"
+. "$SHTAP_HOME/all.sh"
 
 
 # Setting ulimit is a good idea, especially on tests.  If they nibble,

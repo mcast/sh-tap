@@ -10,7 +10,7 @@ tt_checkbashisms() {
 }
 
 list_sh_files() {
-    (cd $SHTAP_HOME; find . -type f) | $TDIR/non_sh_filter.pl
+    (cd "$SHTAP_HOME/.."; find . -type f) | $TDIR/non_sh_filter.pl
 }
 
 main() {

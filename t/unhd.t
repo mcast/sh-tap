@@ -22,8 +22,7 @@ tt_binary_clean() { # XXX: extract+test this for general use; check exit code
 	datasum=$( rand_stream $datalen | stream_digest )
 	rand_stream $datalen | \
 	    ( # device under test
-	    t_stdin_is moo DUT1 | tail -n+5 | \
-		$SHTAP_HOME/bin/unhd ) | \
+	    t_stdin_is moo DUT1 | tail -n+5 | unhd ) | \
 		stream_digest | t_stdin_is '%s\n' "binary clean ($datalen,'$lineprefix')" $datasum
 # insert " tee dut.$datasum |" to snaffle the data
     )
@@ -34,13 +33,14 @@ tt_repeatrow() {
 
     yes 'abc' | head -n100 | t_stdin_is moo DUT2 | \
 	( # feed it some 4-byte repeating data
-	$SHTAP_HOME/bin/unhd 2>&1 >/dev/null; echo "exit $?" ) | \
+	unhd 2>&1 >/dev/null; echo "exit $?" ) | \
 	    t_stdin_is '%s\nexit 255\n' 'repeat rows are broken, but not silently' \
 	    't/../bin/unhd: repeat rows are not implemented'
 }
 
 main() {
     t_plan 8
+    PATH="$SHTAP_HOME/../bin:$PATH"
 
     echo -n A | t_stdin_is moo DUT0 | tail -n+5 | \
 	t_stdin_is '%s\n' "check device-under-test ignores 'wanted'" \
@@ -62,7 +62,7 @@ main() {
 
     # Without the "tail -n+5", we concatenate
     echo 'string we give' | t_stdin_is 'wantand' DUT3 | \
-	$SHTAP_HOME/bin/unhd | t_stdin_is 'wantandstring we give\n' concatenate
+	unhd | t_stdin_is 'wantandstring we give\n' concatenate
 
 
     # unhd slurps all input before emitting any output is a

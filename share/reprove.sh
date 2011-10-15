@@ -40,7 +40,7 @@ reprove() {
 
     # Setup
     export T_ANOTHER_SH=$with_sh
-    export PATH=$SHTAP_HOME/lib/another-sh:$PATH
+    export PATH="$SHTAP_HOME/another-sh:$PATH"
     reprove_shelldebug
 
     # Run some files.  One subtest out for each in the wrapped test,

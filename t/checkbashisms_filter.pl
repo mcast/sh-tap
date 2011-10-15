@@ -28,7 +28,7 @@ while (<>) {
 	   m{^possible bashism in (.*) line (\d+) \(([^()]+)\):$}) {
 
     # that is what it does, you don't have to use it
-    $ignore = ($file eq "lib/ulimits.sh" && $prob eq "ulimit");
+    $ignore = ($file eq "share/ulimits.sh" && $prob eq "ulimit");
 
     # balanced by a check in the quoted text
     $ignore ||= ($prob eq '$BASH_SOMETHING');

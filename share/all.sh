@@ -1,7 +1,7 @@
 # -*- shell -*-
 
-if [ -z "$SHTAP_HOME" ] || [ ! -d "$SHTAP_HOME" ]; then
-    echo "$0: SHTAP_HOME must be set before calling <sh-tap>/lib/all.sh" >&2
+if [ -z "$SHTAP_HOME" ] || [ ! -d "$SHTAP_HOME" ] || [ ! -f "$SHTAP_HOME/t_funcs.sh" ]; then
+    echo "$0: SHTAP_HOME must be set before calling <sh-tap>/all.sh" >&2
     exit 1
 fi
 
@@ -9,7 +9,7 @@ fi
 
 
 # Load all sh-tap functions
-. "$SHTAP_HOME/lib/t_funcs.sh"
-. "$SHTAP_HOME/lib/reprove.sh"
-. "$SHTAP_HOME/lib/rand.sh"
-. "$SHTAP_HOME/lib/ulimits.sh"
+. "$SHTAP_HOME/t_funcs.sh"
+. "$SHTAP_HOME/reprove.sh"
+. "$SHTAP_HOME/rand.sh"
+. "$SHTAP_HOME/ulimits.sh"
