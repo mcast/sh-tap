@@ -49,3 +49,7 @@ It works well enough.  Selftests pass.  Stop messing about with it!
 However, some (names of) functions might have to change.  There are
 neater solutions to common idioms, so refactoring or deprecation are
 likely.
+
+** See also
+  http://www.illusori.co.uk/projects/bash-tap/
+    https://github.com/illusori/bash-tap
