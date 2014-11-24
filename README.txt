@@ -53,3 +53,5 @@ likely.
 ** See also
   http://www.illusori.co.uk/projects/bash-tap/
     https://github.com/illusori/bash-tap
+
+  https://github.com/sstephenson/bats
