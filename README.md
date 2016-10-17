@@ -26,6 +26,49 @@ the test script.
 sh-tap does not ensure the test script's exitcode is set to match the
 overall pass/fail state.  That saves keeping some state.
 
+# How to use it
+## Example test script
+
+`cat [example.t](./example.t)`
+
+```
+#! /bin/sh
+
+tt_sum() {
+    [ $(( $1 + $2 )) = $3 ]; t_prev_okfail "sum($1+$2==$3)"
+}
+
+main() {
+    t_plan 4
+    tt_sum 1 1 2
+    tt_sum 2 2 4
+    tt_sum 2 6 8
+    tt_sum 8 10 18
+}
+
+SHTAP_HOME="$(dirname $0)"
+. "$SHTAP_HOME/lib/all.sh"
+TAPified main
+```
+
+The most useful functions are defined and documented in [lib/t_funcs.sh](./lib/t_funcs.sh), others are loaded from [lib/all.sh](./lib/all.sh).
+
+## Run it
+
+```
+$ prove -v ./example.t 
+./example.t .. 
+1..4
+ok 1 - sum(1+1==2)
+ok 2 - sum(2+2==4)
+ok 3 - sum(2+6==8)
+ok 4 - sum(8+10==18)
+ok
+All tests successful.
+Files=1, Tests=4,  0 wallclock secs ( 0.06 usr +  0.00 sys =  0.06 CPU)
+Result: PASS
+```
+
 # History
 ## Inception
 It started life as "I'll just write some tests for this (shell script)
