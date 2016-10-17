@@ -29,7 +29,7 @@ overall pass/fail state.  That saves keeping some state.
 # How to use it
 ## Example test script
 
-`cat [example.t](./example.t)`
+`cat `[`example.t`](./example.t)
 
 ```
 #! /bin/sh
@@ -76,8 +76,9 @@ app.  I guess I will need 'ok' and 'fail'".  It then ballooned into a
 monster yak-shaving.
 
 I saw
-  http://testanything.org/wiki/index.php/TAP_Producers#SH_.2F_Shell_Script
-  http://svn.solucorp.qc.ca/repos/solucorp/JTap/trunk/
+
+* http://testanything.org/wiki/index.php/TAP_Producers#SH_.2F_Shell_Script
+* http://svn.solucorp.qc.ca/repos/solucorp/JTap/trunk/
 
 but decided, after skim-reading it, that I liked mine better.  NIH.
 
