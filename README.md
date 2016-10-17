@@ -53,3 +53,11 @@ likely.
 * http://www.illusori.co.uk/projects/bash-tap/
   *  https://github.com/illusori/bash-tap
 * https://github.com/sstephenson/bats
+* In xUnit world,
+  * shunit [website](http://shunit.sourceforge.net/) [sourceforge](https://sourceforge.net/projects/shunit/), version 1.5 released 2008-11-02
+  * shunit2 [sourceforge](https://sourceforge.net/projects/shunit2/), last update 2013-04-23
+      * [In Debian](http://packages.debian.org/shunit2)
+      * [Blog](http://www.mikewright.me/blog/2013/10/31/shunit2-bash-testing/)
+  * http://stackoverflow.com/questions/971945/unit-testing-for-shell-scripts
+
+Where I have put a date, doesn't mean the project hasn't moved since I looked!
