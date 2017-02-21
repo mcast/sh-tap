@@ -69,6 +69,11 @@
 #    significant.
 #
 #
+# t_diag "printf format string" "$@"
+#
+#    Print a test comment, ensuring each line is indented with '#'
+#
+#
 # main | TAPify_filter
 #
 #    Assuming shellfunction main() contains all your tests - append
@@ -153,6 +158,10 @@ t_stdin_is() {
 	    printf '# But got\n%s\n' "$got"
 	    ) | awk -- '/^#/ { print }  !/^#/ { print "#   " $0 }'
     fi
+}
+
+t_diag() {
+    printf "$@" | t_comment_indent
 }
 
 t_comment_indent() {

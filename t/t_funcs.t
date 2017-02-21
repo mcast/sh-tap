@@ -156,6 +156,9 @@ tt_helpers() {
     printf 'whee\nwhoo\nwah\n' | t_comment_indent '##  ' | \
 	t_stdin_is '##  whee\n##  whoo\n##  wah\n' 't_comment_indent(##  )'
 
+    t_diag 'whee %s\ntoo %s\n' 'woo' 'wit' | \
+	t_stdin_is '# whee woo\n# too wit\n' t_diag
+
     # Bail out
     (t_ok; t_bailout; t_bailout "aching diodes in left leg") | TAPify_filter | \
 	t_stdin_is 'ok 1\nBail out!\nBail out! # aching diodes in left leg\n' 't_bailout'
@@ -174,12 +177,12 @@ tt_helpers() {
 
 
 main() {
-    echo "1..20"
+    echo "1..21"
 
     tt_stdin # 4
     tt_okfail # 2
     tt_tapify # 7
-    tt_helpers # 7
+    tt_helpers # 8
 }
 
 
