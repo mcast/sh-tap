@@ -37,10 +37,13 @@ SHTAP_HOME="$TDIR/.."
 # running the tests.  This manifests as incomplete output and non-zero
 # exit codes.
 #
+# Also "Cannot fork", meaning insufficient t_maxprocs
+#
 # We accept limits from the environment, or take these defaults.
 # To not call ulimit, leave any of them unset.
 : ${t_maxmem:=40960} # KiB
-: ${t_maxprocs:=250}
+running_threads=$( ps -m -u $USER |wc -l )
+: ${t_maxprocs:=$(( $running_threads + 100 )) }
 : ${t_maxcpu:=15} # seconds (per process)
 : ${t_maxfds:=32}
 : ${t_maxfilesz:=10240} # KiB (hopefully, despite shells' efforts)
