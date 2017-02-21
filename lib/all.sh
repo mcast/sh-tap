@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 if [ -z "$SHTAP_HOME" ] || [ ! -d "$SHTAP_HOME" ]; then
     echo "$0: SHTAP_HOME must be set before calling <sh-tap>/lib/all.sh" >&2

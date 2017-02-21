@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 # TAP (test anything protocol) / prove(1) compatible shell functions.
 #

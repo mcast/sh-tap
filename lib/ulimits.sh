@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 t_set_ulimits() { # TESTME: I poked it until it seemed to work on my machine
 

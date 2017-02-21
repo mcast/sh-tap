@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 
 # This shell fragment sets variables, loads sh-tap functions and runs

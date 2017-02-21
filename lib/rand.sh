@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 
 # Random seed + stream generators are intended to be portable

@@ -1,4 +1,4 @@
-# -*- shell -*-
+# -*- sh -*-
 
 
 # Strip off test numbering so we can take another pass through TAPify_filter
